@@ -1,0 +1,102 @@
+CREATE DATABASE comp3161;
+USE comp3161;
+
+CREATE TABLE user(
+    user_id VARCHAR(20) NOT NULL,
+    address_id VARCHAR (20) NOT NULL,
+    first_name VARCHAR(20) NOT NULL,
+    last_name VARCHAR(20) NOT NULL,
+    username VARCHAR(20) NOT NULL,
+    password VARCHAR(20) NOT NULL,
+    
+    PRIMARY KEY(user_id),
+    FOREIGN KEY (address_id) REFERNCE ON address(address_id) ON UPDATE CASCADE ON DELETE CASCADE
+);
+
+CREATE TABLE address(
+    address_id VARCHAR(20) NOT NULL,
+    street VARCHAR (40) NOT NULL,
+    city VARCHAR (30) NOT NULL
+    
+    PRIMARY KEY(address_id)
+);
+
+CREATE TABLE recipe(
+    recipe_id VARCHAR(20) NOT NULL,
+    user_id VARCHAR(20) NOT NULL,
+    recipe_name VARCHAR(20) NOT NULL,
+    description VARCHAR(80) NOT NULL,
+    prep_instriction VARCHAR(120) NOT NULL,
+    cook_instruction VARCHAR(120) NOT NULL,
+    
+    PRIMARY KEY (recipe_id),
+    FOREIGN KEY (user_id) REFERNCE ON user(user_id)
+);
+
+-- This is where the many-to-many relationship between recipe and ingredients
+CREATE TABLE contain(
+    recipe_id VARCHAR(20) NOT NULL,
+    ingredient_id VARCHAR(20) NOT NULL,
+    measurement VARCHAR(10) NOT NULL,
+    
+    FOREIGN KEY (recipe_id) REFERENCE ON recipe(recipe_id) ON DELETE CASCADE,
+    FOREIGN KEY (ingredient_id) REFERENCE ON ingredient(ingredient_id) ON DELETE CASCADE
+);
+
+CREATE TABLE ingredient(
+    ingredient_id VARCHAR(20) NOT NULL,
+    ingredient_name VARCHAR(20) NOT NULL,
+    description VARCHAR(20) NOT NULL,
+    
+    PRIMARY KEY (ingredient_id)
+);
+
+CREATE TABLE in_kitchen(
+    ingredient_id VARCHAR(20) NOT NULL,
+    kitchen_id VARCHAR(20) NOT NULL,
+    
+    size DECIMAL(2, 1) NOT NULL,
+    unit VARCHAR(10),
+    expiration_date DATE NOT NULL,
+    
+    FOREIGN KEY (ingredient_id) REFERENCE ON ingredient(ingredient_id) ON DELETE CASCADE ON UPDATE CASCADE,
+    FOREIGN KEY (kitchen_id) REFERENCE ON kitchen(kitchen_id) ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+CREATE TABLE kitchen(
+    kitchen_id VARCHAR(20) NOT NULL,
+    user_id VARCHAR(20) NOT NULL,
+    
+    PRIMARY KEY(kitchen_id,user_id),
+    FOREIGN KEY (user_id) REFERNCE ON user(user_id) ON UPDATE CASCADE ON DELETE RESTRICT
+);
+     
+---------------------------------------
+CREATE TABLE meal(
+    meal_id VARCHAR(20) NOT NULL,
+    meal_name VARCHAR(20) NOT NULL,
+    meal_type VARCHAR(20) NOT NULL,
+    meal_img VARCHAR(20) NOT NULL,
+    serving VARCHAR(20) NOT NULL,
+    
+    PRIMARY KEY (meal_id)
+);
+
+CREATE TABLE meal_plan(
+    meal_plan_id VARCHAR(20) NOT NULL,
+    PRIMARY KEY (meal_plan_id)
+);
+    
+CREATE TABLE market_list(
+    market_list_id VARCHAR(20) NOT NULL,
+    PRIMARY KEY(market_list_id)
+);
+ ----------------------------------------------    
+
+CREATE TABLE recipe_meal(
+    recipe_id VARCHAR(20) NOT NULL,
+    meal_id VARCHAR(20) NOT NULL,
+    calorie_count VARCHAR(20) NOT NULL,
+    PRIMARY KEY(recipe_id,meal_id),
+    FOREIGN KEY(recipe_id)
+);

@@ -1,0 +1,14 @@
+ROOT USER: 
+saismith
+
+DB NAME:
+c9
+
+START DB
+mysql-ctl start
+
+STOP DB:
+mysql-ctl stop
+
+ENTER INTERACTIVE TERMINAL:
+mysql-ctl cli

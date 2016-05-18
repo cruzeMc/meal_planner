@@ -1,0 +1,125 @@
+ID: 620070422
+Name: Jhovan Daniel
+Date: 01/03/2016
+
+COMP3161 
+	Assignment 1
+
+
+
+
+
+Assumptions:
+- One owner owns one kitchen
+
+Constraints (unable to show on ER diagram):
+- 1 meal plan can be generated a week
+- One ordinary user can have one meal advisor, and one meal advisor can advise one ordinary user.
+
+Added Information:
+- Expiry date for ingredients in a user’s kitchen, to allow a user to know if his/her stock of ingredients is about to expire or is expired.
+- A meal advisor entity, which is a user. This would be helpful to users who have little nutritional and meal planning knowledge and would like assistance in planning meals which are right for them.
+
+
+
+
+
+
+Relations and Tables:
+
+User Table:
+User (user_id, username, password, first_name, last_name, address, date_of_birth) primary key (user_id)
+user_id
+username
+password
+first_name
+last_name
+address
+date_of_birth
+
+Ingredient Table:
+Ingredient (ingredient_id, ingredient_name, description) primary key (ingredient_id)
+ingredient_id
+ingredient_name
+description
+
+Recipe Table: 
+Recipe (recipe_id, recipe name, description, prep_instructions, cook_instructions, user_id) primary key (recipe_id) foreign key (user_id)
+recipe_id
+recipe name
+description
+prep_instructions
+cook_instructions
+user_id
+
+Meal Table:
+Meal (meal_id, meal_name, meal_type, meal_image, serving) primary key (meal_id)
+meal_id
+meal_name
+meal_type
+meal_image
+serving
+
+Meal_Plan Table;
+Meal_Plan (meal_plan_id) primary key (meal_plan_id)
+meal_plan_id
+
+Kitchen Table:
+Kitchen (kitchen_id, user_id) primary key (kitchen_id, user_id) foreign key (user_id)
+kitchen_id
+user_id
+
+Market_List Table:
+Market_List (market_list_id) primary key(market_list_id)
+market_list _id
+
+Recipe_Meal Table:
+Recipe_Meal (recipe_id, meal_id, calorie_count) primary key (recipe_id, meal_id) foreign key (recipe_id)
+recipe_id
+meal_id
+calorie_count
+
+Recipe_ingredient Table:
+Recipe_ingredient (recipe_id, ingredient_id, measurement) primary key (recipe_id, ingredient_id) foreign key (recipe_id)
+recipe_id
+ingredient_id
+measurement
+
+Ingredient_kitchen Table:
+Ingredient_kitchen (ingredient_id, kitchen_id, quantity, expiry_date) primary key (ingredient_id, kitchen_id)
+ingredient_id
+kitchen_id
+quantity
+expiry_date
+
+User_Meal_Plan: 
+User_Meal_Plan (user_id, meal_plan_id, generate_date) primary key (user_id, meal_plan_id) forei
+
+
+
+DELIMITER // 
+CREATE PROCEDURE `makeUser` (
+IN in_username VARCHAR(30),
+IN in_password VARCHAR(20),
+IN in_lastname VARCHAR(30),
+IN in_firstname VARCHAR(30)
+)
+ BEGIN 
+INSERT INTO `user` (username, password, last_name, first_name)
+VALUES (in_username, in_password, in_lastname, in_firstname);
+END // 
+DELIMITER ;
+
+
+
+DELIMITER // 
+CREATE PROCEDURE `makeRecipe` (
+IN in_user_id INT (10),
+IN in_recipe_name VARCHAR (30),
+IN in_calorie_count INT (10)
+)
+ BEGIN 
+INSERT INTO `recipe` (user_id, recipe_name, calorie_count)
+VALUES (in_user_id, in_recipe_name, in_calorie_count);
+END // 
+DELIMITER ;
